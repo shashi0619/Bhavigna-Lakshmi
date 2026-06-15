@@ -892,14 +892,14 @@ const StorySectionBase = ({ classes }) => (
           <div className={classes.storyImgGrid}>
             <div className={classes.storyImgTall}>
               <img
-                src="https://picsum.photos/seed/blc-story-tall/400/440"
+                src="https://images.unsplash.com/photo-1601821765780-754fa98637c1?auto=format&fit=crop&w=600&h=750&q=80"
                 alt="Handloom weaving"
                 className={classes.storyImg}
                 style={{ height: '100%' }}
               />
             </div>
-            <img src="https://picsum.photos/seed/blc-story-1/400/210" alt="Artisan at work" className={classes.storyImg} />
-            <img src="https://picsum.photos/seed/blc-story-2/400/210" alt="Silk threads" className={classes.storyImg} />
+            <img src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?auto=format&fit=crop&w=600&h=750&q=80" alt="Artisan at work" className={classes.storyImg} />
+            <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&h=750&q=80" alt="Silk threads" className={classes.storyImg} />
           </div>
           <div className={classes.storyAccentBox} />
         </div>
