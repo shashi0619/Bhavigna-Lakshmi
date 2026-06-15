@@ -12,7 +12,7 @@ import {
   ListItem,
 } from '../styles/CareGuide';
 import { ImageWrapper } from '../styles/TermsAndConditions';
-import Necklaces from '../public/images/f-5.JPG';
+import Necklaces from '../public/images/IMG_2488_min.jpg';
 
 const styles = () => ({
   heading: {
@@ -26,13 +26,13 @@ const CareGuide = ({ collections, classes, user }) => (
   <Layout
     pathname={false}
     collections={collections}
-    title="Care Guide | Dovile Ko"
+    title="Care Guide | Bhavigna Laxmi Jewellery"
     user={user}
   >
     <Wrapper>
       <ImageWrapper>
         <Figure>
-          <Image src={Necklaces} alt="Crafts market" />
+          <Image src={Necklaces} alt="Bhavigna Laxmi Jewellery" />
         </Figure>
       </ImageWrapper>
       <Text>
@@ -48,55 +48,42 @@ const CareGuide = ({ collections, classes, user }) => (
         <List>
           <ListItem>
             <Typography variant="body1" paragraph color="secondary">
-              Store your jewellery separately, so the pieces don’t rub and
-              scratch against each other. It is especially important for
-              oxidized silver, gold-plated metals to keep them all separated.
+              Store each piece of jewellery separately in a soft pouch or
+              individual box to prevent scratching and tangling. This is
+              especially important for gold-plated and stone-set pieces.
             </Typography>
           </ListItem>
           <ListItem>
             <Typography variant="body1" paragraph color="secondary">
-              Damp and hot conditions will cause jewellery to tarnish so do not
-              store jewellery next to heating vents, windowsills or in the
-              bathroom.
+              Keep jewellery away from damp and humid conditions. Do not store
+              near bathrooms, windowsills, or heating vents as moisture
+              accelerates tarnishing.
             </Typography>
           </ListItem>
           <ListItem>
             <Typography variant="body1" paragraph color="secondary">
-              Perfumes, lotions, creams and hair products can react with the
-              jewellery, causing silver to tarnish and gold to erode. Apply any
-              scents or cosmetics before you put on your jewellery.
+              Always apply perfumes, lotions, creams, and hairsprays before
+              putting on your jewellery. Chemicals in these products can react
+              with metals and cause discolouration.
             </Typography>
           </ListItem>
           <ListItem>
             <Typography variant="body1" paragraph color="secondary">
-              Remove jewellery when exercising, cleaning, gardening or carrying
-              out any other rough or physical work.
+              Remove jewellery before exercising, cleaning, cooking, gardening,
+              or any physical activity to avoid damage and premature wear.
             </Typography>
           </ListItem>
           <ListItem>
             <Typography variant="body1" paragraph color="secondary">
-              Try not to wear your jewellery overnight.
+              Always remove jewellery before bathing, swimming in a pool, or
+              entering the sea. Chlorine and salt water can damage metals and
+              loosen stone settings.
             </Typography>
           </ListItem>
           <ListItem>
             <Typography variant="body1" paragraph color="secondary">
-              Hot weather, bright sunlight and perspiration can speed up the
-              tarnishing process and damage gemstones. Jewellery should always
-              be taken off before the pool, shower or sea.
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <Typography variant="body1" paragraph color="secondary">
-              A Silver &apos;Dip&apos; treatment is a great way to clean silver
-              jewellery, but always make sure the jewellery is rinsed thoroughly
-              with water afterwards and the instructions for the product are
-              strictly followed.
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <Typography variant="body1" paragraph color="secondary">
-              Gold-plated jewellery can be cleaned with warm soapy water. Then
-              rinse thoroughly and dry well with a soft cloth.
+              Avoid wearing jewellery overnight. Sleeping with jewellery on can
+              bend delicate pieces and cause unnecessary wear over time.
             </Typography>
           </ListItem>
         </List>
@@ -107,60 +94,71 @@ const CareGuide = ({ collections, classes, user }) => (
           paragraph
           className={classes.heading}
         >
-          WOOD AND AMBER JEWELLERY CARE
+          GOLD &amp; SILVER JEWELLERY CARE
         </Typography>
         <List>
           <ListItem>
             <Typography variant="body1" paragraph color="secondary">
-              Never leave amber jewellery under direct sunlight. It could cause
-              a colour change from yellow to orange.
+              Clean gold jewellery with a soft brush dipped in mild soapy warm
+              water. Rinse well and pat dry with a soft lint-free cloth.
             </Typography>
           </ListItem>
           <ListItem>
             <Typography variant="body1" paragraph color="secondary">
-              Wood and amber jewellery is water resistant but should not be
-              immersed in water or kept in high humidity; if it does get wet
-              however, immediately blot dry.
+              For gold-plated jewellery, wipe gently with a damp soft cloth.
+              Avoid abrasive cleaners or scrubbing as these can remove the
+              plating over time.
             </Typography>
           </ListItem>
           <ListItem>
             <Typography variant="body1" paragraph color="secondary">
-              To keep the wood smooth and to help maintain its dark colour, rub
-              it with oil such as linseed, olive or even baby oil with a soft
-              cloth.
+              Polish silver jewellery regularly with a silver polishing cloth to
+              maintain its shine and prevent tarnish from building up.
             </Typography>
           </ListItem>
           <ListItem>
             <Typography variant="body1" paragraph color="secondary">
-              All Dovile&apos;s jewellery is made from solid, natural hardwood;
-              do not try to force or bend it and be careful not to drop it.
+              Store silver pieces in anti-tarnish pouches or wrap them in
+              acid-free tissue paper when not in use.
+            </Typography>
+          </ListItem>
+        </List>
+        <Typography
+          align="left"
+          color="secondary"
+          variant="h2"
+          paragraph
+          className={classes.heading}
+        >
+          STONE &amp; GEMSTONE JEWELLERY CARE
+        </Typography>
+        <List>
+          <ListItem>
+            <Typography variant="body1" paragraph color="secondary">
+              Handle gemstone jewellery with extra care. Avoid dropping or
+              knocking stone-set pieces against hard surfaces as this can chip
+              or crack the stones.
             </Typography>
           </ListItem>
           <ListItem>
             <Typography variant="body1" paragraph color="secondary">
-              Always make sure earrings and brooches with amber are locked
-              correctly while wearing it.
+              Clean gemstone jewellery gently with a soft damp cloth. Avoid
+              soaking pieces as water can loosen adhesive settings.
             </Typography>
           </ListItem>
           <ListItem>
             <Typography variant="body1" paragraph color="secondary">
-              Pay attention when handling these designs because amber could be
-              brittle. Although it is presented as a gemstone that does not mean
-              it is hard as a stone.
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <Typography variant="body1" paragraph color="secondary">
-              Please note, that amber rings are not suitable for everyday wear.
+              Keep gemstone pieces away from direct sunlight for prolonged
+              periods as strong UV rays can fade the colour of certain stones
+              over time.
             </Typography>
           </ListItem>
         </List>
         <Typography variant="body1" paragraph color="secondary">
-          Amber is authentic and organic gem material. It is still breathing and
-          interacting with the environment. Amber colour may change over time,
-          this is expected and contributes to the unique, intensely individual
-          nature of Baltic Amber. Each piece of amber ages differently because
-          of its combination of plant materials and fossil inclusions.
+          At Bhavigna Laxmi Jewellery, every piece is handcrafted with care and
+          passion. With the right care, your jewellery will remain as beautiful
+          as the day you received it. If you have any questions about caring for
+          a specific piece, please do not hesitate to contact us.
         </Typography>
       </Text>
     </Wrapper>
