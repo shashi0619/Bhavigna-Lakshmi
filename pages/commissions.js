@@ -12,7 +12,7 @@ import {
   Text,
 } from '../styles/Commissions';
 import { Mail } from '../styles/Shared';
-import CommissionsImage from '../public/images/commissions.JPG';
+const CommissionsImage = '/images/bhavigna laxmi logo.webp';
 
 const styles = () => ({
   heading: {

@@ -12,7 +12,7 @@ import {
   List,
   ListItem,
 } from '../styles/TermsAndConditions';
-import PrivacyImage from '../public/images/Dovile-Jewellery-3.JPG';
+const PrivacyImage = '/images/bhavigna laxmi logo.webp';
 
 const styles = () => ({
   heading: {

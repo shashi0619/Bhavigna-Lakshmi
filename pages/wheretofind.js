@@ -15,8 +15,8 @@ import {
   Data,
 } from '../styles/WhereToFind';
 import { AnchorLink, Table, Row } from '../styles/Shared';
-import WhereToFindImage1 from '../public/images/wheretofind1.JPG';
-import WhereToFindImage2 from '../public/images/wheretofind2.JPG';
+const WhereToFindImage1 = '/images/bhavigna laxmi logo.webp';
+const WhereToFindImage2 = '/images/bhavigna laxmi logo.webp';
 
 const styles = () => ({
   heading: {

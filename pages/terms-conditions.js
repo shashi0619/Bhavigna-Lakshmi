@@ -12,7 +12,7 @@ import {
   Figure,
 } from '../styles/TermsAndConditions';
 import { StyledAnchorLink } from '../styles/Shared';
-import TermsImage from '../public/images/Dovile-Jewellery-2.JPG';
+const TermsImage = '/images/bhavigna laxmi logo.webp';
 
 const styles = () => ({
   heading: {

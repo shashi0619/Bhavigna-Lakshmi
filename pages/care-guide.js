@@ -12,7 +12,7 @@ import {
   ListItem,
 } from '../styles/CareGuide';
 import { ImageWrapper } from '../styles/TermsAndConditions';
-import Necklaces from '../public/images/IMG_2488_min.jpg';
+const Necklaces = '/images/bhavigna laxmi logo.webp';
 
 const styles = () => ({
   heading: {
