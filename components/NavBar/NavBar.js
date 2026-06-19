@@ -39,12 +39,24 @@ const styles = (theme) => ({
   brandWrapper: {
     flex: 1,
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
     cursor: 'pointer',
     textDecoration: 'none',
     userSelect: 'none',
-    [theme.breakpoints.down('sm')]: { alignItems: 'center', flex: 1 },
+    gap: 12,
+    [theme.breakpoints.down('sm')]: { justifyContent: 'center', flex: 1 },
+  },
+  logoImg: {
+    width: 80,
+    height: 80,
+    objectFit: 'contain',
+    flexShrink: 0,
+  },
+  brandText: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   brandName: {
     fontFamily: "'Cormorant Garamond', Georgia, serif",
@@ -183,12 +195,19 @@ class NavBar extends React.Component {
             <Link href="/" passHref>
               {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
               <a className={classes.brandWrapper} style={{ textDecoration: 'none' }}>
-                <span className={classes.brandName}>Bhavigna Lakshmi</span>
-                <span className={classes.brandTagline}>
-                  <span className={classes.goldDivider} />
-                  Collections
-                  <span className={classes.goldDivider} />
-                </span>
+                <img
+                  src="/images/bhavigna laxmi logo.webp"
+                  alt="Bhavigna Lakshmi Logo"
+                  className={classes.logoImg}
+                />
+                <div className={classes.brandText}>
+                  <span className={classes.brandName}>Bhavigna Lakshmi</span>
+                  <span className={classes.brandTagline}>
+                    <span className={classes.goldDivider} />
+                    Collections
+                    <span className={classes.goldDivider} />
+                  </span>
+                </div>
               </a>
             </Link>
 

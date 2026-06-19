@@ -724,7 +724,7 @@ const HeroSectionBase = ({ classes }) => (
     <div className={classes.heroPattern} />
     <div className={classes.heroGlow} />
     <div className={classes.heroContent}>
-      <p className={classes.heroPre}>Est. 2018 · Hyderabad, India</p>
+      <p className={classes.heroPre}>Est. 2018 · Gajwel, India</p>
       <div className={classes.heroGoldBar}>
         <div className={classes.goldLine} />
         <span style={{ fontFamily: "'Cormorant Garamond', serif", color: '#C9A84C', fontSize: '0.8rem', letterSpacing: '0.3em', fontStyle: 'italic' }}>
@@ -876,7 +876,7 @@ const StorySectionBase = ({ classes }) => (
           </h2>
           <p className={classes.storyText}>
             Bhagya Laxmi Jewellery was born from a deep reverence for India's extraordinary jewellery heritage.
-            Founded in Hyderabad, we curate handcrafted pieces sourced directly from the finest goldsmith
+            Founded in Gajwel, we curate handcrafted pieces sourced directly from the finest goldsmith
             communities across South India — from temple jewellery to bridal sets and everyday adornments.
           </p>
           <p className={classes.storyText}>

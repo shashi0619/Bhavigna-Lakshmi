@@ -356,7 +356,7 @@ const Contact = ({ pathname, collections, classes }) => {
               <div>
                 <div className={classes.infoItemTitle}>Address</div>
                 <div className={classes.infoItemText}>
-                  12, Silk Lane, Banjara Hills<br />Hyderabad, Telangana 500034
+                  Gajwel, Telangana 502110
                 </div>
               </div>
             </div>

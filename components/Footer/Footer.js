@@ -19,6 +19,19 @@ const styles = () => ({
     '@media (min-width: 768px)': { gridTemplateColumns: '2fr 1fr 1fr 1fr' },
   },
   brandCol: {},
+  logoImg: {
+    width: 80,
+    height: 80,
+    objectFit: 'contain',
+    marginBottom: 8,
+    display: 'block',
+  },
+  brandRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 8,
+  },
   brandName: {
     fontFamily: "'Cormorant Garamond', Georgia, serif",
     fontSize: '1.4rem',
@@ -122,9 +135,18 @@ const Footer = ({ classes }) => (
     <div className={classes.grid}>
       {/* Brand column */}
       <div className={classes.brandCol}>
-        <div className={classes.brandName}>Bhavigna Lakshmi</div>
-        <div className={classes.brandTagline}>Collections</div>
-        <div className={classes.goldLine} />
+        <div className={classes.brandRow}>
+          <img
+            src="/images/bhavigna laxmi logo.webp"
+            alt="Bhavigna Lakshmi Logo"
+            className={classes.logoImg}
+          />
+          <div>
+            <div className={classes.brandName}>Bhavigna Lakshmi</div>
+            <div className={classes.brandTagline}>Collections</div>
+          </div>
+        </div>
+        <div className={classes.goldLine} style={{ marginTop: 0 }} />
         <Typography className={classes.brandDesc}>
           Celebrating the timeless artistry of Indian handloom and heritage
           craftsmanship. Every piece is a story woven in silk, thread, and tradition.

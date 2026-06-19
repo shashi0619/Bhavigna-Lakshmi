@@ -367,8 +367,8 @@ const VALUES = [
 const MILESTONES = [
   {
     year: '2018',
-    title: 'Founded in Hyderabad',
-    text: 'Bhagya Laxmi Jewellery opens its first boutique in Hyderabad with a curated range of traditional South Indian gold jewellery — earrings, harams, and bridal sets handpicked from master craftsmen.',
+    title: 'Founded in Gajwel',
+    text: 'Bhagya Laxmi Jewellery opens its first boutique in Gajwel with a curated range of traditional South Indian gold jewellery — earrings, harams, and bridal sets handpicked from master craftsmen.',
   },
   {
     year: '2019',
@@ -383,7 +383,7 @@ const MILESTONES = [
   {
     year: '2022',
     title: 'Bridal Jewellery Studio',
-    text: 'Opened a dedicated bridal consultation studio in Hyderabad offering bespoke bridal set styling, custom vaddanam fittings, and personalised jadabilla selections for every bride.',
+    text: 'Opened a dedicated bridal consultation studio in Gajwel offering bespoke bridal set styling, custom vaddanam fittings, and personalised jadabilla selections for every bride.',
   },
   {
     year: '2024',
@@ -432,7 +432,7 @@ const About = ({ pathname, collections, classes }) => (
             </h2>
             <div className={classes.goldDivider} />
             <p className={classes.body}>
-              Bhagya Laxmi Jewellery was founded in Hyderabad by a family deeply rooted in South India's
+              Bhagya Laxmi Jewellery was founded in Gajwel by a family deeply rooted in South India's
               rich jewellery tradition. Growing up surrounded by the splendour of temple jewellery, the
               glitter of gold harams, and the sacred beauty of vaddanams worn at every celebration, our
               founders felt a deep calling — to bring these treasured traditions to every home.
