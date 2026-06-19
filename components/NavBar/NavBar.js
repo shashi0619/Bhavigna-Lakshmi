@@ -145,11 +145,15 @@ class NavBar extends React.Component {
 
   componentDidMount() {
     Router.events.on('routeChangeComplete', () => window.scrollTo(0, 0));
+    window.addEventListener('open-cart-drawer', this.openCartDrawer);
   }
 
   componentWillUnmount() {
     Router.events.off('routeChangeComplete', () => window.scrollTo(0, 0));
+    window.removeEventListener('open-cart-drawer', this.openCartDrawer);
   }
+
+  openCartDrawer = () => this.setState({ drawerCart: true });
 
   handleTabChange = (_, value) => {
     const { clearOptionRedux } = this.props;

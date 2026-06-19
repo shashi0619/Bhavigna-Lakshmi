@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 import { COLLECTION_META } from '../../data/products';
+import { addToCart } from '../../store/actions';
 
 const styles = {
   card: {
@@ -51,7 +53,7 @@ const styles = {
     backgroundColor: 'transparent',
   },
   meta: {
-    padding: '12px 10px 16px',
+    padding: '12px 10px 14px',
   },
   collection: {
     fontFamily: "'Raleway', sans-serif",
@@ -68,20 +70,55 @@ const styles = {
     fontWeight: 500,
     color: '#1C0C00',
     lineHeight: 1.3,
-    marginBottom: 5,
+    marginBottom: 8,
+  },
+  priceRow: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
+  priceBlock: {
+    display: 'flex',
+    flexDirection: 'column',
   },
   price: {
-    fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.8rem',
-    fontWeight: 600,
+    fontFamily: "'Cormorant Garamond', Georgia, serif",
+    fontSize: '1.15rem',
+    fontWeight: 700,
     color: '#8B1A3B',
+    letterSpacing: '0.02em',
+    lineHeight: 1,
+  },
+  priceLabel: {
+    fontFamily: "'Raleway', sans-serif",
+    fontSize: '0.58rem',
+    color: '#8B7355',
+    letterSpacing: '0.1em',
+    textTransform: 'uppercase',
+    marginTop: 2,
+  },
+  addBtn: {
+    fontFamily: "'Raleway', sans-serif",
+    fontSize: '0.58rem',
+    fontWeight: 700,
+    letterSpacing: '0.14em',
+    textTransform: 'uppercase',
+    color: '#FDF8F0',
+    backgroundColor: '#8B1A3B',
+    border: 'none',
+    padding: '7px 11px',
+    cursor: 'pointer',
+    flexShrink: 0,
+    transition: 'background-color 0.2s',
+    '&:hover': { backgroundColor: '#6e1430' },
   },
 };
 
 const formatPrice = (p) =>
   new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(p);
 
-const Card = ({ item, classes }) => (
+const Card = ({ item, classes, addToCartRedux }) => (
   <Link href={`/piece?slug=${item.slug}`} as={`/piece/${item.slug}`} passHref>
     <a className={classes.card} style={{ textDecoration: 'none' }}>
       <div className={classes.imgWrap}>
@@ -99,7 +136,23 @@ const Card = ({ item, classes }) => (
           {COLLECTION_META[item.group]?.label || item.group}
         </div>
         <div className={classes.name}>{item.name}</div>
-        <div className={classes.price}>{formatPrice(item.price)}</div>
+        <div className={classes.priceRow}>
+          <div className={classes.priceBlock}>
+            <span className={classes.price}>{formatPrice(item.price)}</span>
+            <span className={classes.priceLabel}>{item.category}</span>
+          </div>
+          <button
+            className={classes.addBtn}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addToCartRedux(item);
+            }}
+            aria-label={`Add ${item.name} to cart`}
+          >
+            + Add to Cart
+          </button>
+        </div>
       </div>
     </a>
   </Link>
@@ -108,6 +161,11 @@ const Card = ({ item, classes }) => (
 Card.propTypes = {
   item: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
+  addToCartRedux: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(Card);
+const mapDispatchToProps = (dispatch) => ({
+  addToCartRedux: (item) => dispatch(addToCart(item)),
+});
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(Card));

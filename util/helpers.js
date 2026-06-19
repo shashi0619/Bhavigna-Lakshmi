@@ -3,19 +3,11 @@ const { imageSizes } = require('./globals');
 
 exports.cartHelper = {
   totalItems(cart) {
-    return cart.reduce((acc, item) => {
-      const items = acc + item.quantity;
-      return items;
-    }, 0);
+    return cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
   },
 
   totalPrice(cart) {
-    const totalPrice = cart.reduce((acc, item) => {
-      const price = acc + item.price * item.quantity;
-      return price;
-    }, 0);
-
-    return totalPrice.toFixed(2);
+    return cart.reduce((acc, item) => acc + item.price * (item.quantity || 1), 0).toFixed(2);
   },
 };
 

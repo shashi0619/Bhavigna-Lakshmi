@@ -15,12 +15,13 @@ const buildWhatsAppLink = (cart) => {
     new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
 
   const itemLines = cart
-    .map((item, idx) =>
-      `${idx + 1}. ${item.name} × ${item.quantity}  —  ${formatINR(item.price * item.quantity)}`
-    )
+    .map((item, idx) => {
+      const qty = item.quantity || 1;
+      return `${idx + 1}. ${item.name} × ${qty}  —  ${formatINR(item.price * qty)}`;
+    })
     .join('\n');
 
-  const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const total = cart.reduce((acc, item) => acc + item.price * (item.quantity || 1), 0);
 
   const message = [
     '🛍️ *Order Enquiry – Bhagya Laxmi Jewellery*',

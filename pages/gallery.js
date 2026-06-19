@@ -2,9 +2,11 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Router from 'next/router';
 import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 
 import Layout from '../components/Layout';
 import { products, COLLECTIONS, COLLECTION_META } from '../data/products';
+import { addToCart } from '../store/actions';
 
 const styles = (theme) => ({
   pageHero: {
@@ -239,19 +241,55 @@ const styles = (theme) => ({
   cardPriceRow: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'space-between',
     gap: 8,
   },
+  cardPriceBlock: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
   cardPrice: {
-    fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.82rem',
-    fontWeight: 600,
+    fontFamily: "'Playfair Display', Georgia, serif",
+    fontSize: '1.1rem',
+    fontWeight: 700,
     color: '#8B1A3B',
+    letterSpacing: '0.01em',
+    lineHeight: 1,
   },
   cardCategory: {
     fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.62rem',
+    fontSize: '0.58rem',
     color: '#9B7B6A',
     textTransform: 'capitalize',
+    marginTop: 2,
+  },
+  addCartBtn: {
+    fontFamily: "'Raleway', sans-serif",
+    fontSize: '0.58rem',
+    fontWeight: 700,
+    letterSpacing: '0.14em',
+    textTransform: 'uppercase',
+    color: '#FDF8F0',
+    backgroundColor: '#8B1A3B',
+    border: 'none',
+    padding: '7px 11px',
+    cursor: 'pointer',
+    flexShrink: 0,
+    transition: 'background-color 0.2s',
+    '&:hover': { backgroundColor: '#6e1430' },
+  },
+  addedCartBtn: {
+    fontFamily: "'Raleway', sans-serif",
+    fontSize: '0.58rem',
+    fontWeight: 700,
+    letterSpacing: '0.14em',
+    textTransform: 'uppercase',
+    color: '#2e6e3e',
+    backgroundColor: '#e6f4ea',
+    border: '1px solid #a8d5b5',
+    padding: '7px 11px',
+    cursor: 'default',
+    flexShrink: 0,
   },
 
   empty: {
@@ -264,7 +302,7 @@ const styles = (theme) => ({
   },
 });
 
-const Gallery = ({ pathname, collections, router, classes }) => {
+const Gallery = ({ pathname, collections, router, classes, addToCartRedux, cart }) => {
   const queryCollection = router?.query?.collection || 'all';
   const [active, setActive] = useState(
     COLLECTIONS.includes(queryCollection) ? queryCollection : 'all'
@@ -414,8 +452,31 @@ const Gallery = ({ pathname, collections, router, classes }) => {
                   </div>
                   <div className={classes.cardName}>{item.name}</div>
                   <div className={classes.cardPriceRow}>
-                    <span className={classes.cardPrice}>{formatPrice(item.price)}</span>
-                    <span className={classes.cardCategory}>{item.category}</span>
+                    <div className={classes.cardPriceBlock}>
+                      <span className={classes.cardPrice}>{formatPrice(item.price)}</span>
+                      <span className={classes.cardCategory}>{item.category}</span>
+                    </div>
+                    {cart.some((c) => c._id === item._id) ? (
+                      <button
+                        className={classes.addedCartBtn}
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label="Added to cart"
+                      >
+                        ✓ Added
+                      </button>
+                    ) : (
+                      <button
+                        className={classes.addCartBtn}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCartRedux(item);
+                          window.dispatchEvent(new CustomEvent('open-cart-drawer'));
+                        }}
+                        aria-label={`Add ${item.name} to cart`}
+                      >
+                        + Add to Cart
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -432,8 +493,16 @@ Gallery.propTypes = {
   collections: PropTypes.arrayOf(PropTypes.string),
   router: PropTypes.object,
   classes: PropTypes.object.isRequired,
+  addToCartRedux: PropTypes.func.isRequired,
+  cart: PropTypes.array.isRequired,
 };
 
 Gallery.getInitialProps = async ({ pathname }) => ({ pathname });
 
-export default withStyles(styles)(Gallery);
+const mapStateToProps = (state) => ({ cart: state.cart });
+
+const mapDispatchToProps = (dispatch) => ({
+  addToCartRedux: (item) => dispatch(addToCart(item)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Gallery));
