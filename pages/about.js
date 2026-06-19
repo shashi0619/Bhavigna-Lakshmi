@@ -493,7 +493,7 @@ const About = ({ pathname, collections, classes }) => (
             {[
               'photo-1596944924616-7b38e7cfac36',
               'photo-1515562141207-7a88fb7ce338',
-              'photo-1573408301185-9519f94797e4',
+              'photo-1515562141207-7a88fb7ce338',
               'photo-1599643477877-530eb83abc8e',
             ].map((id) => (
               <img
