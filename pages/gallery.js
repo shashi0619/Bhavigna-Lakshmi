@@ -144,22 +144,28 @@ const styles = (theme) => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '8px',
-    [theme.breakpoints.up('sm')]: { gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' },
-    [theme.breakpoints.up('lg')]: { gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' },
+    gap: '12px',
+    [theme.breakpoints.up('sm')]: { gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' },
+    [theme.breakpoints.up('lg')]: { gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' },
   },
   card: {
     position: 'relative',
-    overflow: 'hidden',
     cursor: 'pointer',
-    backgroundColor: '#F0E8D8',
-    '&:hover $cardImg': { transform: 'scale(1.06)' },
-    '&:hover $cardHover': { opacity: 1 },
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
+    overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
+    transition: 'box-shadow 0.22s, transform 0.22s',
+    '&:hover': { boxShadow: '0 8px 28px rgba(0,0,0,0.14)', transform: 'translateY(-3px)' },
+    '&:hover $cardImg': { transform: 'scale(1.04)' },
   },
   cardImgWrap: {
     overflow: 'hidden',
-    paddingBottom: '125%',
+    paddingBottom: '100%',
     position: 'relative',
+    backgroundColor: '#f5f0ea',
   },
   cardImg: {
     position: 'absolute',
@@ -167,144 +173,127 @@ const styles = (theme) => ({
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-    transition: 'transform 0.55s ease',
+    transition: 'transform 0.45s ease',
   },
-  cardHover: {
+  heartBtn: {
     position: 'absolute',
-    inset: 0,
-    backgroundColor: 'rgba(28,12,0,0.32)',
+    top: 8,
+    right: 8,
+    width: 32,
+    height: 32,
+    borderRadius: '50%',
+    backgroundColor: 'rgba(255,255,255,0.93)',
+    border: 'none',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    opacity: 0,
-    transition: 'opacity 0.3s',
-  },
-  cardHoverBtn: {
-    fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.62rem',
-    fontWeight: 700,
-    letterSpacing: '0.18em',
-    textTransform: 'uppercase',
-    color: '#FDF8F0',
-    border: '1px solid rgba(253,248,240,0.8)',
-    padding: '9px 20px',
-    backgroundColor: 'transparent',
     cursor: 'pointer',
-    '&:hover': { backgroundColor: '#C9A84C', borderColor: '#C9A84C', color: '#1C0C00' },
+    fontSize: '1rem',
+    zIndex: 2,
+    boxShadow: '0 1px 5px rgba(0,0,0,0.14)',
+    transition: 'background-color 0.2s',
+    '&:hover': { backgroundColor: '#fff' },
   },
   soldBadge: {
     position: 'absolute',
-    top: 10,
-    right: 10,
+    top: 8,
+    left: 8,
     backgroundColor: 'rgba(28,12,0,0.72)',
-    color: '#FDF8F0',
+    color: '#fff',
     fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.55rem',
-    letterSpacing: '0.14em',
+    fontSize: '0.52rem',
+    letterSpacing: '0.08em',
     textTransform: 'uppercase',
-    fontWeight: 600,
-    padding: '4px 10px',
+    fontWeight: 700,
+    padding: '3px 10px',
+    borderRadius: 20,
+    zIndex: 2,
   },
   newBadge: {
     position: 'absolute',
-    top: 10,
-    left: 10,
+    top: 8,
+    left: 8,
     backgroundColor: '#8B1A3B',
-    color: '#FDF8F0',
+    color: '#fff',
     fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.55rem',
-    letterSpacing: '0.14em',
+    fontSize: '0.52rem',
+    letterSpacing: '0.08em',
     textTransform: 'uppercase',
-    fontWeight: 600,
-    padding: '4px 10px',
+    fontWeight: 700,
+    padding: '3px 10px',
+    borderRadius: 20,
+    zIndex: 2,
   },
   cardMeta: {
-    padding: '10px 10px 14px',
-    '@media (max-width: 600px)': { padding: '8px 8px 12px' },
-  },
-  cardCollection: {
-    fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.58rem',
-    letterSpacing: '0.2em',
-    textTransform: 'uppercase',
-    color: '#C9A84C',
-    fontWeight: 600,
-    marginBottom: 4,
+    padding: '10px 12px 12px',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
   },
   cardName: {
-    fontFamily: "'Cormorant Garamond', Georgia, serif",
-    fontSize: '1.05rem',
-    fontWeight: 500,
-    color: '#1C0C00',
-    lineHeight: 1.3,
+    fontFamily: "'Raleway', sans-serif",
+    fontSize: '0.83rem',
+    fontWeight: 700,
+    color: '#111',
+    lineHeight: 1.4,
     marginBottom: 6,
+  },
+  cardCollection: {
+    display: 'inline-block',
+    backgroundColor: '#f2f2f2',
+    color: '#555',
+    fontFamily: "'Raleway', sans-serif",
+    fontSize: '0.56rem',
+    fontWeight: 600,
+    letterSpacing: '0.06em',
+    textTransform: 'uppercase',
+    padding: '3px 9px',
+    borderRadius: 20,
+    marginBottom: 8,
+    alignSelf: 'flex-start',
   },
   cardPriceRow: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginTop: 'auto',
+    paddingTop: 8,
     gap: 4,
-    marginTop: 2,
   },
-  cardPriceBlock: {
-    display: 'flex',
-    flexDirection: 'column',
-    minWidth: 0,
-  },
+  cardPriceBlock: { display: 'flex', alignItems: 'center' },
   cardPrice: {
-    fontFamily: "'Playfair Display', Georgia, serif",
-    fontSize: '1rem',
-    fontWeight: 700,
-    color: '#8B1A3B',
-    letterSpacing: '0.01em',
-    lineHeight: 1,
-    '@media (max-width: 600px)': { fontSize: '0.88rem' },
-  },
-  cardCategory: {
     fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.56rem',
-    color: '#9B7B6A',
-    textTransform: 'capitalize',
-    marginTop: 2,
+    fontSize: '1rem',
+    fontWeight: 800,
+    color: '#111',
+    letterSpacing: '0.01em',
   },
+  cardCategory: { display: 'none' },
   addCartBtn: {
     fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.55rem',
+    fontSize: '0.7rem',
     fontWeight: 700,
-    letterSpacing: '0.08em',
-    textTransform: 'uppercase',
-    color: '#FDF8F0',
-    backgroundColor: '#8B1A3B',
-    border: 'none',
-    padding: '6px 8px',
+    color: '#B8860B',
+    backgroundColor: 'transparent',
+    border: '1.5px solid #C9A84C',
+    borderRadius: 20,
+    padding: '5px 14px',
     cursor: 'pointer',
     flexShrink: 0,
     whiteSpace: 'nowrap',
-    lineHeight: 1.3,
-    transition: 'background-color 0.2s',
-    '&:hover': { backgroundColor: '#6e1430' },
-    '@media (max-width: 600px)': {
-      fontSize: '0.5rem',
-      padding: '5px 6px',
-      letterSpacing: '0.04em',
-    },
+    transition: 'all 0.2s',
+    '&:hover': { backgroundColor: '#C9A84C', color: '#fff' },
   },
   addedCartBtn: {
     fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.55rem',
+    fontSize: '0.7rem',
     fontWeight: 700,
-    letterSpacing: '0.08em',
-    textTransform: 'uppercase',
     color: '#2e6e3e',
     backgroundColor: '#e6f4ea',
-    border: '1px solid #a8d5b5',
-    padding: '6px 8px',
+    border: '1.5px solid #a8d5b5',
+    borderRadius: 20,
+    padding: '5px 12px',
     whiteSpace: 'nowrap',
-    lineHeight: 1.3,
-    '@media (max-width: 600px)': {
-      fontSize: '0.5rem',
-      padding: '5px 6px',
-    },
     cursor: 'default',
     flexShrink: 0,
   },
@@ -457,22 +446,21 @@ const Gallery = ({ pathname, collections, router, classes, addToCartRedux, cart 
               >
                 <div className={classes.cardImgWrap}>
                   <img src={item.frontImage} alt={item.name} className={classes.cardImg} />
-                  <div className={classes.cardHover}>
-                    <button className={classes.cardHoverBtn}>View Details</button>
-                  </div>
+                  <button
+                    className={classes.heartBtn}
+                    onClick={(e) => e.stopPropagation()}
+                    aria-label="Wishlist"
+                  >♡</button>
                   {item.featured && <span className={classes.newBadge}>Featured</span>}
                   {!item.available && <span className={classes.soldBadge}>Sold Out</span>}
                 </div>
                 <div className={classes.cardMeta}>
+                  <div className={classes.cardName} title={item.name}>{item.name.length > 32 ? item.name.slice(0, 32).trimEnd() + '…' : item.name}</div>
                   <div className={classes.cardCollection}>
                     {COLLECTION_META[item.group]?.label || item.group}
                   </div>
-                  <div className={classes.cardName}>{item.name}</div>
                   <div className={classes.cardPriceRow}>
-                    <div className={classes.cardPriceBlock}>
-                      <span className={classes.cardPrice}>{formatPrice(item.price)}</span>
-                      <span className={classes.cardCategory}>{item.category}</span>
-                    </div>
+                    <span className={classes.cardPrice}>{formatPrice(item.price)}</span>
                     {cart.some((c) => c._id === item._id) ? (
                       <button
                         className={classes.addedCartBtn}
@@ -491,7 +479,7 @@ const Gallery = ({ pathname, collections, router, classes, addToCartRedux, cart 
                         }}
                         aria-label={`Add ${item.name} to cart`}
                       >
-                        + Add to Cart
+                        Add
                       </button>
                     )}
                   </div>

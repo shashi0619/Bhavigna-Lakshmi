@@ -55,6 +55,14 @@ class MyApp extends App {
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
           />
+          <style>{`
+            .card-name-clamp {
+              display: -webkit-box !important;
+              -webkit-line-clamp: 2 !important;
+              -webkit-box-orient: vertical !important;
+              overflow: hidden !important;
+            }
+          `}</style>
         </Head>
         <ThemeProvider theme={theme}>
           <CssBaseline />

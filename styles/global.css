@@ -49,6 +49,15 @@ button.image-gallery-fullscreen-button .image-gallery-svg {
 .nav-button { background: none; border: none; padding: 1rem 0.75rem; }
 .carousel { padding: 0 20px; }
 
+/* ── product card name clamp ──────────────────────────────── */
+.card-name-clamp {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
 /* ── utility ──────────────────────────────────────────────── */
 .blc-serif {
   font-family: 'Cormorant Garamond', Georgia, serif;

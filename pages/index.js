@@ -4,9 +4,11 @@ import Router from 'next/router';
 import PropTypes from 'prop-types';
 import { Typography, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 
 import Layout from '../components/Layout';
 import { getFeatured, COLLECTION_META, COLLECTIONS } from '../data/products';
+import { addToCart } from '../store/actions';
 
 const styles = (theme) => ({
   // ── Hero ─────────────────────────────────────────────────────
@@ -326,16 +328,22 @@ const styles = (theme) => ({
   },
   productCard: {
     position: 'relative',
-    overflow: 'hidden',
     cursor: 'pointer',
-    backgroundColor: '#F0E8D8',
-    '&:hover $productImg': { transform: 'scale(1.06)' },
-    '&:hover $productHover': { opacity: 1 },
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
+    overflow: 'hidden',
+    display: 'flex',
+    flexDirection: 'column',
+    transition: 'box-shadow 0.22s, transform 0.22s',
+    '&:hover': { boxShadow: '0 8px 28px rgba(0,0,0,0.14)', transform: 'translateY(-3px)' },
+    '&:hover $productImg': { transform: 'scale(1.04)' },
   },
   productImgWrap: {
     overflow: 'hidden',
-    paddingBottom: '125%',
+    paddingBottom: '100%',
     position: 'relative',
+    backgroundColor: '#f5f0ea',
   },
   productImg: {
     position: 'absolute',
@@ -343,69 +351,96 @@ const styles = (theme) => ({
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-    transition: 'transform 0.5s ease',
+    transition: 'transform 0.45s ease',
   },
-  productHover: {
-    position: 'absolute',
-    inset: 0,
-    backgroundColor: 'rgba(28,12,0,0.35)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    opacity: 0,
-    transition: 'opacity 0.3s',
-  },
-  productHoverBtn: {
-    fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.62rem',
-    fontWeight: 700,
-    letterSpacing: '0.2em',
-    textTransform: 'uppercase',
-    color: '#FDF8F0',
-    border: '1px solid rgba(253,248,240,0.8)',
-    padding: '9px 20px',
-    backgroundColor: 'transparent',
-    cursor: 'pointer',
-    '&:hover': { backgroundColor: '#C9A84C', borderColor: '#C9A84C', color: '#1C0C00' },
-  },
+  productHover: { display: 'none' },
+  productHoverBtn: { display: 'none' },
   productAvailBadge: {
     position: 'absolute',
-    top: 12,
-    left: 12,
+    top: 8,
+    left: 8,
     backgroundColor: '#8B1A3B',
-    color: '#FDF8F0',
+    color: '#fff',
     fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.58rem',
-    letterSpacing: '0.14em',
+    fontSize: '0.52rem',
+    letterSpacing: '0.08em',
     textTransform: 'uppercase',
-    fontWeight: 600,
-    padding: '4px 10px',
+    fontWeight: 700,
+    padding: '3px 10px',
+    borderRadius: 20,
+    zIndex: 2,
   },
   productMeta: {
-    padding: '14px 12px 16px',
+    padding: '10px 12px 12px',
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
   },
   productCollection: {
+    display: 'inline-block',
+    backgroundColor: '#f2f2f2',
+    color: '#555',
     fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.6rem',
-    letterSpacing: '0.2em',
-    textTransform: 'uppercase',
-    color: '#C9A84C',
+    fontSize: '0.56rem',
     fontWeight: 600,
-    marginBottom: 4,
+    letterSpacing: '0.06em',
+    textTransform: 'uppercase',
+    padding: '3px 9px',
+    borderRadius: 20,
+    marginBottom: 8,
+    marginTop: 4,
+    alignSelf: 'flex-start',
   },
   productName: {
-    fontFamily: "'Cormorant Garamond', Georgia, serif",
-    fontSize: '1.05rem',
-    fontWeight: 500,
-    color: '#1C0C00',
-    lineHeight: 1.3,
+    fontFamily: "'Raleway', sans-serif",
+    fontSize: '0.83rem',
+    fontWeight: 700,
+    color: '#111',
+    lineHeight: 1.4,
     marginBottom: 4,
+  },
+  productPriceRow: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 'auto',
+    paddingTop: 8,
+    gap: 4,
   },
   productPrice: {
     fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.82rem',
-    fontWeight: 600,
-    color: '#8B1A3B',
+    fontSize: '1rem',
+    fontWeight: 800,
+    color: '#111',
+    letterSpacing: '0.01em',
+  },
+  productAddBtn: {
+    fontFamily: "'Raleway', sans-serif",
+    fontSize: '0.7rem',
+    fontWeight: 700,
+    color: '#B8860B',
+    backgroundColor: 'transparent',
+    border: '1.5px solid #C9A84C',
+    borderRadius: 20,
+    padding: '5px 14px',
+    cursor: 'pointer',
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    transition: 'all 0.2s',
+    '&:hover': { backgroundColor: '#C9A84C', color: '#fff' },
+  },
+  productAddedBtn: {
+    fontFamily: "'Raleway', sans-serif",
+    fontSize: '0.7rem',
+    fontWeight: 700,
+    color: '#2e6e3e',
+    backgroundColor: '#e6f4ea',
+    border: '1.5px solid #a8d5b5',
+    borderRadius: 20,
+    padding: '5px 12px',
+    whiteSpace: 'nowrap',
+    cursor: 'default',
+    flexShrink: 0,
   },
 
   // ── Brand story ───────────────────────────────────────────────
@@ -491,6 +526,42 @@ const styles = (theme) => ({
   // ── Pillars ───────────────────────────────────────────────────
   pillarsSection: {
     backgroundColor: '#FDF8F0',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  pillarsDecorLeft: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    height: '100%',
+    width: 'auto',
+    maxWidth: '45%',
+    objectFit: 'cover',
+    objectPosition: 'right center',
+    opacity: 0.18,
+    pointerEvents: 'none',
+    userSelect: 'none',
+    [theme.breakpoints.down('sm')]: {
+      left: '50%',
+      transform: 'translateX(-50%)',
+      maxWidth: '100%',
+      opacity: 0.15,
+    },
+  },
+  pillarsDecorRight: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    height: '100%',
+    width: 'auto',
+    maxWidth: '45%',
+    objectFit: 'cover',
+    objectPosition: 'left center',
+    opacity: 0.18,
+    pointerEvents: 'none',
+    userSelect: 'none',
+    transform: 'scaleX(-1)',
+    [theme.breakpoints.down('sm')]: { display: 'none' },
   },
   pillarsGrid: {
     display: 'grid',
@@ -530,6 +601,30 @@ const styles = (theme) => ({
   // ── Testimonials ─────────────────────────────────────────────
   testimonialsSection: {
     backgroundColor: '#FAF5ED',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  goldDecorRight: {
+    position: 'absolute',
+    right: 0,
+    top: '50%',
+    transform: 'translateY(-50%)',
+    width: 260,
+    opacity: 0.13,
+    pointerEvents: 'none',
+    userSelect: 'none',
+    [theme.breakpoints.down('sm')]: { width: 160 },
+  },
+  goldDecorLeft: {
+    position: 'absolute',
+    left: 0,
+    top: '50%',
+    transform: 'translateY(-50%) scaleX(-1)',
+    width: 260,
+    opacity: 0.13,
+    pointerEvents: 'none',
+    userSelect: 'none',
+    [theme.breakpoints.down('sm')]: { width: 160 },
   },
   testimonialsGrid: {
     display: 'grid',
@@ -651,29 +746,29 @@ const styles = (theme) => ({
 
 const TESTIMONIALS = [
   {
-    text: 'The Kanjivaram saree I ordered was absolutely breathtaking. The zari work is exquisite and the silk quality is beyond compare. I received so many compliments at my daughter\'s wedding.',
-    author: 'Priya Raghunathan',
-    location: 'Chennai',
-    stars: '★★★★★',
-  },
-  {
-    text: 'Bhavigna Lakshmi Collections truly understands what it means to carry tradition forward. My Banarasi saree arrived perfectly packaged and the colour is even more vivid in person.',
-    author: 'Meena Krishnaswamy',
-    location: 'Bengaluru',
-    stars: '★★★★★',
-  },
-  {
-    text: 'The designer blouse I ordered was crafted with such precision and love. The zardosi embroidery is museum-quality. This is my go-to brand for all festive occasions now.',
-    author: 'Ananya Nambiar',
+    text: 'I bought a gold haram and vaddanam set for my daughter\'s wedding from Bhavigna Lakshmi Jewellery. The craftsmanship is stunning — every guest kept asking where we got it. Absolutely worth every rupee.',
+    author: 'Padma Venkatesh',
     location: 'Hyderabad',
+    stars: '★★★★★',
+  },
+  {
+    text: 'The Panchaloham earrings I ordered arrived beautifully packed and looked even more gorgeous in person. The quality is excellent and the price is very reasonable. Highly recommend to everyone!',
+    author: 'Swapna Reddy',
+    location: 'Warangal',
+    stars: '★★★★★',
+  },
+  {
+    text: 'Bhavigna Lakshmi is my go-to for all festive jewellery. The bridal necklace set I purchased was hallmarked and the finish is simply flawless. Trusted shop with genuine South Indian craftsmanship.',
+    author: 'Lakshmi Narayana',
+    location: 'Gajwel',
     stars: '★★★★★',
   },
 ];
 
 const PILLARS = [
-  { icon: '🪡', title: 'Heritage Craftsmanship', text: 'Every piece is woven or embroidered by master artisans carrying forward centuries-old traditions from India\'s finest weaving centres.' },
-  { icon: '✦', title: 'Authentic Materials', text: 'We source only certified pure silks, natural dyes, and genuine gold zari threads to ensure the highest quality and longevity.' },
-  { icon: '♾', title: 'Timeless Design', text: 'Our designs honour classical motifs while speaking to the modern Indian woman — pieces you\'ll wear today and pass down tomorrow.' },
+  { icon: '💎', title: 'Hallmarked Purity', text: 'Every gold and silver piece we carry is BIS hallmarked, guaranteeing certified purity so you invest with complete confidence and peace of mind.' },
+  { icon: '🏺', title: 'Master Goldsmith Craft', text: 'Our jewellery is handcrafted by skilled goldsmiths from the finest artisan communities of South India, preserving centuries of temple and bridal jewellery tradition.' },
+  { icon: '👑', title: 'Bridal to Everyday', text: 'From grand bridal sets, harams and vaddanam to delicate everyday earrings and chains — we have the perfect piece for every occasion and every woman.' },
 ];
 
 const Index = ({ pathname, collections }) => {
@@ -819,7 +914,7 @@ const CollectionsSectionBase = ({ classes }) => (
 );
 const CollectionsSection = withStyles(styles)(CollectionsSectionBase);
 
-const FeaturedSectionBase = ({ classes, featured, formatPrice }) => (
+const FeaturedSectionBase = ({ classes, featured, formatPrice, cart, addToCartRedux }) => (
   <section className={`${classes.section} ${classes.featuredSection}`}>
     <div className={classes.sectionInner}>
       <div className={classes.sectionTitleBar}>
@@ -851,11 +946,28 @@ const FeaturedSectionBase = ({ classes, featured, formatPrice }) => (
               )}
             </div>
             <div className={classes.productMeta}>
+              <div className={classes.productName} title={item.name}>{item.name.length > 32 ? item.name.slice(0, 32).trimEnd() + '…' : item.name}</div>
               <div className={classes.productCollection}>
                 {COLLECTION_META[item.group]?.label || item.group}
               </div>
-              <div className={classes.productName}>{item.name}</div>
-              <div className={classes.productPrice}>{formatPrice(item.price)}</div>
+              <div className={classes.productPriceRow}>
+                <span className={classes.productPrice}>{formatPrice(item.price)}</span>
+                {cart.some((c) => c._id === item._id) ? (
+                  <button
+                    className={classes.productAddedBtn}
+                    onClick={(e) => e.stopPropagation()}
+                  >✓ Added</button>
+                ) : (
+                  <button
+                    className={classes.productAddBtn}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCartRedux(item);
+                      window.dispatchEvent(new CustomEvent('open-cart-drawer'));
+                    }}
+                  >Add</button>
+                )}
+              </div>
             </div>
           </div>
         ))}
@@ -863,7 +975,10 @@ const FeaturedSectionBase = ({ classes, featured, formatPrice }) => (
     </div>
   </section>
 );
-const FeaturedSection = withStyles(styles)(FeaturedSectionBase);
+const FeaturedSection = connect(
+  (state) => ({ cart: state.cart }),
+  (dispatch) => ({ addToCartRedux: (item) => dispatch(addToCart(item)) })
+)(withStyles(styles)(FeaturedSectionBase));
 
 const StorySectionBase = ({ classes }) => (
   <section className={`${classes.section} ${classes.storySection}`}>
@@ -875,7 +990,7 @@ const StorySectionBase = ({ classes }) => (
             A Legacy Crafted in Gold &amp; Gemstones
           </h2>
           <p className={classes.storyText}>
-            Bhagya Laxmi Jewellery was born from a deep reverence for India's extraordinary jewellery heritage.
+            Bhavigna Lakshmi Jewellery was born from a deep reverence for India's extraordinary jewellery heritage.
             Founded in Gajwel, we curate handcrafted pieces sourced directly from the finest goldsmith
             communities across South India — from temple jewellery to bridal sets and everyday adornments.
           </p>
@@ -911,6 +1026,8 @@ const StorySection = withStyles(styles)(StorySectionBase);
 
 const PillarsSectionBase = ({ classes }) => (
   <section className={`${classes.section} ${classes.pillarsSection}`}>
+    <img src="/images/Beige And Gold .png" alt="" className={classes.pillarsDecorLeft} aria-hidden="true" />
+    <img src="/images/Beige And Gold .png" alt="" className={classes.pillarsDecorRight} aria-hidden="true" />
     <div className={classes.sectionInner}>
       <div style={{ textAlign: 'center', marginBottom: 64 }}>
         <span className={classes.sectionLabel}>Why Choose Us</span>
@@ -933,6 +1050,8 @@ const PillarsSection = withStyles(styles)(PillarsSectionBase);
 
 const TestimonialsSectionBase = ({ classes }) => (
   <section className={`${classes.section} ${classes.testimonialsSection}`}>
+    <img src="/images/Gold.png" alt="" className={classes.goldDecorLeft} aria-hidden="true" />
+    <img src="/images/Gold.png" alt="" className={classes.goldDecorRight} aria-hidden="true" />
     <div className={classes.sectionInner}>
       <div style={{ textAlign: 'center', marginBottom: 64 }}>
         <span className={classes.sectionLabel}>What Our Customers Say</span>
@@ -964,9 +1083,9 @@ const NewsletterSectionBase = ({ classes, email, setEmail }) => {
     <section className={classes.newsletterSection}>
       <div className={classes.newsletterInner}>
         <div className={classes.newsletterLabel}>Join Our Circle</div>
-        <h2 className={classes.newsletterTitle}>Stay Draped in Tradition</h2>
+        <h2 className={classes.newsletterTitle}>Be the First to Shine</h2>
         <p className={classes.newsletterSub}>
-          Subscribe for first access to new collections, exclusive care tips, and stories from India's weaving heritage.
+          Subscribe for first access to new jewellery arrivals, exclusive bridal collection previews, gold care tips, and festive offers from Bhavigna Lakshmi Jewellery.
         </p>
         <form className={classes.newsletterForm} onSubmit={handleSubmit}>
           <input

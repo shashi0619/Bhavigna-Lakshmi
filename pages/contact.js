@@ -242,8 +242,8 @@ const Contact = ({ pathname, collections, classes }) => {
     <Layout
       pathname={pathname}
       collections={collections}
-      title="Contact Us | Bhagya Laxmi Jewellery"
-      description="Get in touch with Bhagya Laxmi Jewellery for enquiries about our gold jewellery, bridal sets, vaddanam, and traditional South Indian collections. We'd love to help you find your perfect piece."
+      title="Contact Us | Bhavigna Lakshmi Jewellery"
+      description="Get in touch with Bhavigna Lakshmi Jewellery for enquiries about our gold jewellery, bridal sets, vaddanam, and traditional South Indian collections. We'd love to help you find your perfect piece."
     >
       {/* Hero */}
       <div className={classes.pageHero}>

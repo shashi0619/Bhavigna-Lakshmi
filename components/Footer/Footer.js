@@ -13,10 +13,16 @@ const styles = () => ({
   grid: {
     display: 'grid',
     gridTemplateColumns: '1fr',
-    gap: '48px',
+    gap: '40px',
     maxWidth: 1200,
     margin: '0 auto',
     '@media (min-width: 768px)': { gridTemplateColumns: '2fr 1fr 1fr 1fr' },
+  },
+  linksGrid: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '32px',
+    '@media (min-width: 768px)': { display: 'contents' },
   },
   brandCol: {},
   logoImg: {
@@ -143,39 +149,42 @@ const Footer = ({ classes }) => (
           />
           <div>
             <div className={classes.brandName}>Bhavigna Lakshmi</div>
-            <div className={classes.brandTagline}>Collections</div>
+            <div className={classes.brandTagline}>Jewellery</div>
           </div>
         </div>
         <div className={classes.goldLine} style={{ marginTop: 0 }} />
         <Typography className={classes.brandDesc}>
-          Celebrating the timeless artistry of Indian handloom and heritage
-          craftsmanship. Every piece is a story woven in silk, thread, and tradition.
+          Handcrafted South Indian jewellery sourced directly from master goldsmiths.
+          From bridal harams and vaddanam to everyday gold and silver pieces — every
+          ornament tells a story of tradition and timeless elegance.
         </Typography>
       </div>
 
-      {/* Collections */}
-      <div>
-        <div className={classes.colTitle}>Collections</div>
-        <FooterLink href="/gallery?collection=bridal" label="Bridal" classes={classes} />
-        <FooterLink href="/gallery?collection=festive" label="Festive Wear" classes={classes} />
-        <FooterLink href="/gallery?collection=casual" label="Casual Elegance" classes={classes} />
-        <FooterLink href="/gallery?collection=designer-blouses" label="Designer Blouses" classes={classes} />
-      </div>
+      <div className={classes.linksGrid}>
+        {/* Collections */}
+        <div>
+          <div className={classes.colTitle}>Collections</div>
+          <FooterLink href="/gallery?collection=necklaces" label="Necklaces & Harams" classes={classes} />
+          <FooterLink href="/gallery?collection=earrings" label="Earrings & Jhumkas" classes={classes} />
+          <FooterLink href="/gallery?collection=bangles" label="Bangles & Bracelets" classes={classes} />
+          <FooterLink href="/gallery?collection=bridal" label="Bridal Sets" classes={classes} />
+        </div>
 
-      {/* Company */}
-      <div>
-        <div className={classes.colTitle}>Company</div>
-        <FooterLink href="/about" label="Our Story" classes={classes} />
-        <FooterLink href="/contact" label="Contact Us" classes={classes} />
-        <FooterLink href="/gallery" label="All Products" classes={classes} />
-      </div>
+        {/* Company */}
+        <div>
+          <div className={classes.colTitle}>Company</div>
+          <FooterLink href="/about" label="Our Story" classes={classes} />
+          <FooterLink href="/contact" label="Contact Us" classes={classes} />
+          <FooterLink href="/gallery" label="All Products" classes={classes} />
+        </div>
 
-      {/* Policies */}
-      <div>
-        <div className={classes.colTitle}>Policies</div>
-        <FooterLink href="/care-guide" label="Care Guide" classes={classes} />
-        <FooterLink href="/terms-conditions" label="Terms & Conditions" classes={classes} />
-        <FooterLink href="/privacy-policy" label="Privacy Policy" classes={classes} />
+        {/* Policies */}
+        <div>
+          <div className={classes.colTitle}>Policies</div>
+          <FooterLink href="/care-guide" label="Jewellery Care Guide" classes={classes} />
+          <FooterLink href="/terms-conditions" label="Terms & Conditions" classes={classes} />
+          <FooterLink href="/privacy-policy" label="Privacy Policy" classes={classes} />
+        </div>
       </div>
     </div>
 
@@ -183,7 +192,7 @@ const Footer = ({ classes }) => (
 
     <div className={classes.bottom}>
       <span className={classes.copy}>
-        &copy; {new Date().getFullYear()} Bhavigna Lakshmi Collections. All rights reserved.
+        &copy; {new Date().getFullYear()} Bhavigna Lakshmi Jewellery. All rights reserved.
       </span>
       <div className={classes.socialRow}>
         <a

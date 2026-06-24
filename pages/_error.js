@@ -7,7 +7,7 @@ import { COLLECTIONS } from '../data/products';
 const CustomError = ({ statusCode, pathname = '/' }) => (
   <Layout
     collections={COLLECTIONS}
-    title="Page Not Found | Bhagya Laxmi Jewellery"
+    title="Page Not Found | Bhavigna Lakshmi Jewellery"
     description="South Indian traditional jewellery and bridal adornments."
     pathname={pathname}
   >

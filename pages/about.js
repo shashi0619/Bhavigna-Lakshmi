@@ -229,78 +229,76 @@ const styles = (theme) => ({
     bottom: 0,
     width: 2,
     backgroundColor: 'rgba(201,168,76,0.3)',
-    // mobile: left-side line
-    left: 16,
-    [theme.breakpoints.up('sm')]: {
-      left: '50%',
-      transform: 'translateX(-1px)',
-    },
+    left: '50%',
+    transform: 'translateX(-1px)',
   },
-  // each milestone block
   milestoneItem: {
     position: 'relative',
-    marginBottom: 48,
-    // mobile: indent from left line
-    paddingLeft: 44,
+    marginBottom: 32,
+    width: '50%',
+    paddingRight: 20,
+    paddingLeft: 0,
     [theme.breakpoints.up('sm')]: {
-      width: '50%',
-      paddingLeft: 0,
+      marginBottom: 48,
       paddingRight: 52,
     },
   },
-  // right-side items on desktop
   milestoneItemRight: {
+    marginLeft: '50%',
+    paddingRight: 0,
+    paddingLeft: 20,
     [theme.breakpoints.up('sm')]: {
-      marginLeft: '50%',
-      paddingRight: 0,
       paddingLeft: 52,
     },
   },
   milestoneDot: {
     position: 'absolute',
     top: 6,
-    width: 14,
-    height: 14,
+    width: 12,
+    height: 12,
     borderRadius: '50%',
     backgroundColor: '#C9A84C',
     border: '2px solid #FAF5ED',
     zIndex: 1,
-    // mobile: sit on the left-side line
-    left: 9,
+    right: -6,
+    left: 'auto',
     [theme.breakpoints.up('sm')]: {
-      // left-side items: dot touches right edge → center line
+      width: 14,
+      height: 14,
       right: -7,
-      left: 'auto',
     },
   },
-  // dot for right-side items
   milestoneDotRight: {
+    right: 'auto',
+    left: -6,
     [theme.breakpoints.up('sm')]: {
       left: -7,
-      right: 'auto',
     },
   },
   milestoneYear: {
     fontFamily: "'Cormorant Garamond', Georgia, serif",
-    fontSize: '1.5rem',
+    fontSize: '1.1rem',
     fontWeight: 500,
     color: '#8B1A3B',
     marginBottom: 4,
+    [theme.breakpoints.up('sm')]: { fontSize: '1.5rem' },
   },
   milestoneTitle: {
     fontFamily: "'Raleway', sans-serif",
     fontWeight: 700,
-    fontSize: '0.82rem',
+    fontSize: '0.65rem',
     color: '#1C0C00',
-    letterSpacing: '0.08em',
+    letterSpacing: '0.06em',
     textTransform: 'uppercase',
-    marginBottom: 6,
+    marginBottom: 4,
+    [theme.breakpoints.up('sm')]: { fontSize: '0.82rem', letterSpacing: '0.08em', marginBottom: 6 },
   },
   milestoneText: {
     fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.8rem',
+    fontSize: '0.68rem',
     color: '#6B4C3B',
-    lineHeight: 1.7,
+    lineHeight: 1.6,
+    [theme.breakpoints.up('sm')]: { fontSize: '0.8rem', lineHeight: 1.7 },
   },
 
   // ── CTA ───────────────────────────────────────────────────────
@@ -368,7 +366,7 @@ const MILESTONES = [
   {
     year: '2018',
     title: 'Founded in Gajwel',
-    text: 'Bhagya Laxmi Jewellery opens its first boutique in Gajwel with a curated range of traditional South Indian gold jewellery — earrings, harams, and bridal sets handpicked from master craftsmen.',
+    text: 'Bhavigna Lakshmi Jewellery opens its first boutique in Gajwel with a curated range of traditional South Indian gold jewellery — earrings, harams, and bridal sets handpicked from master craftsmen.',
   },
   {
     year: '2019',
@@ -405,8 +403,8 @@ const About = ({ pathname, collections, classes }) => (
   <Layout
     pathname={pathname}
     collections={collections}
-    title="Our Story | Bhagya Laxmi Jewellery"
-    description="The story behind Bhagya Laxmi Jewellery — a celebration of South Indian jewellery heritage, master goldsmithing, and timeless adornments crafted for life's most precious moments."
+    title="Our Story | Bhavigna Lakshmi Jewellery"
+    description="The story behind Bhavigna Lakshmi Jewellery — a celebration of South Indian jewellery heritage, master goldsmithing, and timeless adornments crafted for life's most precious moments."
   >
     {/* ── Hero ──────────────────────────────────────────────────── */}
     <div className={classes.pageHero}>
@@ -432,7 +430,7 @@ const About = ({ pathname, collections, classes }) => (
             </h2>
             <div className={classes.goldDivider} />
             <p className={classes.body}>
-              Bhagya Laxmi Jewellery was founded in Gajwel by a family deeply rooted in South India's
+              Bhavigna Lakshmi Jewellery was founded in Gajwel by a family deeply rooted in South India's
               rich jewellery tradition. Growing up surrounded by the splendour of temple jewellery, the
               glitter of gold harams, and the sacred beauty of vaddanams worn at every celebration, our
               founders felt a deep calling — to bring these treasured traditions to every home.
@@ -521,7 +519,7 @@ const About = ({ pathname, collections, classes }) => (
               down to the next generation.
             </p>
             <p className={classes.body}>
-              When you buy from Bhagya Laxmi Jewellery, you are not just purchasing an ornament —
+              When you buy from Bhavigna Lakshmi Jewellery, you are not just purchasing an ornament —
               you are sustaining a living tradition and honouring the craftsmen who keep it alive.
             </p>
           </div>
