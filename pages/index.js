@@ -819,7 +819,7 @@ const HeroSectionBase = ({ classes }) => (
     <div className={classes.heroPattern} />
     <div className={classes.heroGlow} />
     <div className={classes.heroContent}>
-      <p className={classes.heroPre}>Est. 2018 · Gajwel, India</p>
+      <p className={classes.heroPre}>Est. 2018 · Gajwel, Telangana, India</p>
       <div className={classes.heroGoldBar}>
         <div className={classes.goldLine} />
         <span style={{ fontFamily: "'Cormorant Garamond', serif", color: '#C9A84C', fontSize: '0.8rem', letterSpacing: '0.3em', fontStyle: 'italic' }}>
