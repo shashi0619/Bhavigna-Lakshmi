@@ -6,36 +6,7 @@ import Drawer from '@material-ui/core/SwipeableDrawer';
 
 import { DrawerContext } from '../DrawerContext';
 import CartDrawerContent from './CartDrawerContent';
-
-const WHATSAPP_NUMBER = '919295555504';
-
-const buildWhatsAppLink = (cart) => {
-  const formatINR = (amount) =>
-    new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
-
-  const itemLines = cart
-    .map((item, idx) => {
-      const qty = item.quantity || 1;
-      return `${idx + 1}. ${item.name} × ${qty}  —  ${formatINR(item.price * qty)}`;
-    })
-    .join('\n');
-
-  const total = cart.reduce((acc, item) => acc + item.price * (item.quantity || 1), 0);
-
-  const message = [
-    '🛍️ *Order Enquiry – Bhavigna Lakshmi Jewellery*',
-    '',
-    itemLines,
-    '',
-    '──────────────────',
-    `*Total: ${formatINR(total)}*`,
-    '*Shipping: Free*',
-    '',
-    'Kindly confirm my order. Thank you! 🙏',
-  ].join('\n');
-
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-};
+import AddressForm from './AddressForm';
 
 const styles = {
   list: {
@@ -70,25 +41,33 @@ const styles = {
     transition: 'color 0.2s',
     '&:hover': { color: '#1C0C00' },
   },
-  cart: {
-    paddingTop: '10px',
-  },
-  whatsappBtn: {
+  payBtn: {
     display: 'block',
-    margin: '20px 16px 8px',
-    backgroundColor: '#25D366',
+    width: 'calc(100% - 32px)',
+    margin: '16px 16px 8px',
+    backgroundColor: '#8B1A3B',
     color: '#fff',
     textAlign: 'center',
     padding: '14px 20px',
     fontFamily: "'Raleway', sans-serif",
     fontWeight: 700,
-    fontSize: '0.82rem',
+    fontSize: '0.88rem',
     letterSpacing: '0.12em',
     textTransform: 'uppercase',
-    textDecoration: 'none',
-    borderRadius: 2,
-    transition: 'background 0.2s',
+    border: 'none',
+    borderRadius: 4,
     cursor: 'pointer',
+    transition: 'background 0.2s',
+    '&:hover': { backgroundColor: '#6e1430' },
+    '&:disabled': { opacity: 0.7, cursor: 'not-allowed' },
+  },
+  secureNote: {
+    textAlign: 'center',
+    fontFamily: "'Raleway', sans-serif",
+    fontSize: '0.65rem',
+    color: '#9B7B6A',
+    marginBottom: 12,
+    letterSpacing: '0.04em',
   },
 };
 
@@ -101,43 +80,139 @@ class CartDrawer extends Component {
 
   static contextType = DrawerContext;
 
+  state = { showAddressForm: false, loading: false };
+
+  loadRazorpayScript = () =>
+    new Promise((resolve) => {
+      if (window.Razorpay) return resolve(true);
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+
+  handleAddressSubmit = async (address) => {
+    const { cart } = this.props;
+    const { toggleDrawer } = this.context;
+
+    this.setState({ showAddressForm: false, loading: true });
+
+    // Close drawer first so Razorpay inputs work properly
+    toggleDrawer('drawerCart', false)();
+
+    const loaded = await this.loadRazorpayScript();
+    if (!loaded) {
+      alert('Payment service unavailable. Please check your connection.');
+      this.setState({ loading: false });
+      return;
+    }
+
+    const total = cart.reduce((acc, item) => acc + item.price * (item.quantity || 1), 0);
+
+    try {
+      const res = await fetch('/api/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: total, address }),
+      });
+      const order = await res.json();
+
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: order.amount,
+        currency: 'INR',
+        name: 'Bhavigna Lakshmi Jewellery',
+        description: `${cart.length} item(s) — South Indian Jewellery`,
+        image: '/images/bhavigna laxmi logo.webp',
+        order_id: order.id,
+        prefill: {
+          name: address.name,
+          email: address.email || '',
+          contact: `+91${address.phone}`,
+        },
+        notes: {
+          address: `${address.address1}, ${address.address2 || ''}, ${address.city}, ${address.state} - ${address.pincode}`,
+          store: 'Bhavigna Lakshmi Jewellery, Gajwel, Telangana',
+        },
+        theme: { color: '#8B1A3B' },
+        handler: (response) => {
+          alert(
+            `✅ Payment Successful!\n\nOrder ID: ${response.razorpay_order_id}\nPayment ID: ${response.razorpay_payment_id}\n\nThank you, ${address.name}! We will deliver to ${address.city} shortly.`
+          );
+        },
+        modal: {
+          ondismiss: () => this.setState({ loading: false }),
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', (response) => {
+        alert(`Payment failed: ${response.error.description}`);
+        this.setState({ loading: false });
+      });
+      rzp.open();
+    } catch (err) {
+      alert('Something went wrong. Please try again.');
+      this.setState({ loading: false });
+    }
+  };
+
   render() {
     const { classes, uniqueCartItems, cart } = this.props;
     const { drawerCart, toggleDrawer } = this.context;
+    const { showAddressForm, loading } = this.state;
 
-    const sideCart = (
-      <CartDrawerContent closeDrawer={toggleDrawer('drawerCart', false)} />
-    );
+    const total = cart
+      ? cart.reduce((acc, item) => acc + item.price * (item.quantity || 1), 0)
+      : 0;
 
     return (
-      <Drawer
-        anchor="right"
-        open={drawerCart}
-        onClose={toggleDrawer('drawerCart', false)}
-        onOpen={toggleDrawer('drawerCart', true)}
-      >
-        <div className={classes.cartHeader}>
-          <span className={classes.cartTitle}>Your Cart</span>
-          <button
-            className={classes.closeBtn}
-            onClick={toggleDrawer('drawerCart', false)}
-            aria-label="Close cart"
-          >✕</button>
-        </div>
-        <div className={classes.list} role="button">
-          {sideCart}
-          {uniqueCartItems > 0 ? (
-            <a
-              href={buildWhatsAppLink(cart)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={classes.whatsappBtn}
-            >
-              📱 Order via WhatsApp
-            </a>
-          ) : null}
-        </div>
-      </Drawer>
+      <>
+        <Drawer
+          anchor="right"
+          open={drawerCart}
+          onClose={toggleDrawer('drawerCart', false)}
+          onOpen={toggleDrawer('drawerCart', true)}
+        >
+          <div className={classes.cartHeader}>
+            <span className={classes.cartTitle}>Your Cart</span>
+            <button
+              className={classes.closeBtn}
+              onClick={toggleDrawer('drawerCart', false)}
+              aria-label="Close cart"
+            >✕</button>
+          </div>
+          <div className={classes.list}>
+            <CartDrawerContent closeDrawer={toggleDrawer('drawerCart', false)} />
+            {uniqueCartItems > 0 && (
+              <>
+                <button
+                  className={classes.payBtn}
+                  onClick={() => {
+                    toggleDrawer('drawerCart', false)();
+                    setTimeout(() => this.setState({ showAddressForm: true }), 300);
+                  }}
+                  disabled={loading}
+                >
+                  {loading ? 'Processing…' : '💳 Proceed to Pay'}
+                </button>
+                <p className={classes.secureNote}>
+                  🔒 Secure payment · UPI · Cards · Net Banking
+                </p>
+              </>
+            )}
+          </div>
+        </Drawer>
+
+        {showAddressForm && (
+          <AddressForm
+            total={total}
+            onSubmit={this.handleAddressSubmit}
+            onClose={() => this.setState({ showAddressForm: false })}
+          />
+        )}
+      </>
     );
   }
 }
