@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 
-const styles = {
+const s = {
   overlay: {
     position: 'fixed',
     inset: 0,
@@ -42,54 +41,7 @@ const styles = {
     color: '#6B4C3B',
     cursor: 'pointer',
     lineHeight: 1,
-  },
-  row: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: 12,
-  },
-  fieldWrap: {
-    marginBottom: 14,
-  },
-  label: {
-    display: 'block',
-    fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.68rem',
-    fontWeight: 600,
-    color: '#6B4C3B',
-    letterSpacing: '0.06em',
-    textTransform: 'uppercase',
-    marginBottom: 5,
-  },
-  input: {
-    width: '100%',
-    border: '1px solid #e0d8cc',
-    borderRadius: 6,
-    padding: '10px 12px',
-    fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.85rem',
-    color: '#1C0C00',
-    outline: 'none',
-    boxSizing: 'border-box',
-    transition: 'border-color 0.2s',
-    '&:focus': { borderColor: '#C9A84C' },
-  },
-  submitBtn: {
-    width: '100%',
-    marginTop: 8,
-    backgroundColor: '#8B1A3B',
-    color: '#fff',
-    border: 'none',
-    borderRadius: 6,
-    padding: '13px',
-    fontFamily: "'Raleway', sans-serif",
-    fontWeight: 700,
-    fontSize: '0.88rem',
-    letterSpacing: '0.1em',
-    textTransform: 'uppercase',
-    cursor: 'pointer',
-    transition: 'background 0.2s',
-    '&:hover': { backgroundColor: '#6e1430' },
+    padding: '4px 8px',
   },
   totalRow: {
     display: 'flex',
@@ -114,6 +66,48 @@ const styles = {
     fontWeight: 800,
     color: '#1C0C00',
   },
+  fieldWrap: { marginBottom: 14 },
+  row: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 },
+  label: {
+    display: 'block',
+    fontFamily: "'Raleway', sans-serif",
+    fontSize: '0.68rem',
+    fontWeight: 600,
+    color: '#6B4C3B',
+    letterSpacing: '0.06em',
+    textTransform: 'uppercase',
+    marginBottom: 5,
+  },
+  input: {
+    width: '100%',
+    border: '1.5px solid #e0d8cc',
+    borderRadius: 6,
+    padding: '10px 12px',
+    fontFamily: "'Raleway', sans-serif",
+    fontSize: '0.85rem',
+    color: '#1C0C00',
+    outline: 'none',
+    boxSizing: 'border-box',
+    backgroundColor: '#fff',
+  },
+  inputError: {
+    borderColor: '#c0392b',
+  },
+  submitBtn: {
+    width: '100%',
+    marginTop: 8,
+    backgroundColor: '#8B1A3B',
+    color: '#fff',
+    border: 'none',
+    borderRadius: 6,
+    padding: '13px',
+    fontFamily: "'Raleway', sans-serif",
+    fontWeight: 700,
+    fontSize: '0.88rem',
+    letterSpacing: '0.1em',
+    textTransform: 'uppercase',
+    cursor: 'pointer',
+  },
 };
 
 const STATES = [
@@ -124,7 +118,10 @@ const STATES = [
   'Uttarakhand','West Bengal','Delhi','Jammu & Kashmir','Ladakh',
 ];
 
-const AddressForm = ({ classes, onSubmit, onClose, total }) => {
+const formatINR = (amt) =>
+  new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amt);
+
+const AddressForm = ({ onSubmit, onClose, total }) => {
   const [form, setForm] = useState({
     name: '', phone: '', email: '',
     address1: '', address2: '',
@@ -132,7 +129,11 @@ const AddressForm = ({ classes, onSubmit, onClose, total }) => {
   });
   const [errors, setErrors] = useState({});
 
-  const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: false }));
+  };
 
   const validate = () => {
     const e = {};
@@ -150,80 +151,132 @@ const AddressForm = ({ classes, onSubmit, onClose, total }) => {
     if (validate()) onSubmit(form);
   };
 
-  const formatINR = (amt) =>
-    new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amt);
-
-  const inputStyle = (id) => ({
-    width: '100%',
-    border: `1.5px solid ${errors[id] ? '#c0392b' : '#e0d8cc'}`,
-    borderRadius: 6,
-    padding: '10px 12px',
-    fontFamily: "'Raleway', sans-serif",
-    fontSize: '0.85rem',
-    color: '#1C0C00',
-    outline: 'none',
-    boxSizing: 'border-box',
-    backgroundColor: '#fff',
+  const inputStyle = (field) => ({
+    ...s.input,
+    ...(errors[field] ? s.inputError : {}),
   });
 
-  const Field = ({ id, label, placeholder, type = 'text', required }) => (
-    <div className={classes.fieldWrap}>
-      <label className={classes.label} htmlFor={id}>{label}{required && ' *'}</label>
-      <input
-        id={id}
-        type={type}
-        placeholder={placeholder}
-        value={form[id]}
-        onChange={set(id)}
-        style={inputStyle(id)}
-        onFocus={(e) => (e.target.style.borderColor = '#C9A84C')}
-        onBlur={(e) => (e.target.style.borderColor = errors[id] ? '#c0392b' : '#e0d8cc')}
-        autoComplete="on"
-      />
-    </div>
-  );
-
   return (
-    <div className={classes.overlay} onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className={classes.modal}>
-        <div className={classes.header}>
-          <span className={classes.title}>Delivery Address</span>
-          <button className={classes.closeBtn} onClick={onClose}>✕</button>
+    <div style={s.overlay}>
+      <div style={s.modal}>
+        <div style={s.header}>
+          <span style={s.title}>Delivery Address</span>
+          <button type="button" style={s.closeBtn} onClick={onClose}>✕</button>
         </div>
 
-        <div className={classes.totalRow}>
-          <span className={classes.totalLabel}>Order Total</span>
-          <span className={classes.totalAmount}>{formatINR(total)}</span>
+        <div style={s.totalRow}>
+          <span style={s.totalLabel}>Order Total</span>
+          <span style={s.totalAmount}>{formatINR(total)}</span>
         </div>
 
-        <form onSubmit={handleSubmit} autoComplete="on">
-          <Field id="name" label="Full Name" placeholder="Your full name" required />
-          <Field id="phone" label="Mobile Number" placeholder="10-digit mobile number" type="tel" required />
-          <Field id="email" label="Email (optional)" placeholder="your@email.com" type="email" />
-          <Field id="address1" label="Address Line 1" placeholder="House / Flat / Street" required />
-          <Field id="address2" label="Address Line 2" placeholder="Landmark, Area (optional)" />
-          <div className={classes.row}>
-            <Field id="city" label="City" placeholder="City" required />
-            <Field id="pincode" label="Pincode" placeholder="6-digit pincode" type="tel" required />
+        <form onSubmit={handleSubmit}>
+
+          <div style={s.fieldWrap}>
+            <label style={s.label} htmlFor="name">Full Name *</label>
+            <input
+              style={inputStyle('name')}
+              id="name" name="name" type="text"
+              placeholder="Your full name"
+              value={form.name}
+              onChange={handleChange}
+              autoComplete="name"
+            />
           </div>
-          <div className={classes.fieldWrap}>
-            <label className={classes.label} htmlFor="state">State *</label>
+
+          <div style={s.fieldWrap}>
+            <label style={s.label} htmlFor="phone">Mobile Number *</label>
+            <input
+              style={inputStyle('phone')}
+              id="phone" name="phone" type="tel"
+              placeholder="10-digit mobile number"
+              value={form.phone}
+              onChange={handleChange}
+              maxLength={10}
+              autoComplete="tel"
+            />
+          </div>
+
+          <div style={s.fieldWrap}>
+            <label style={s.label} htmlFor="email">Email (optional)</label>
+            <input
+              style={inputStyle('email')}
+              id="email" name="email" type="email"
+              placeholder="your@email.com"
+              value={form.email}
+              onChange={handleChange}
+              autoComplete="email"
+            />
+          </div>
+
+          <div style={s.fieldWrap}>
+            <label style={s.label} htmlFor="address1">Address Line 1 *</label>
+            <input
+              style={inputStyle('address1')}
+              id="address1" name="address1" type="text"
+              placeholder="House / Flat / Street"
+              value={form.address1}
+              onChange={handleChange}
+              autoComplete="address-line1"
+            />
+          </div>
+
+          <div style={s.fieldWrap}>
+            <label style={s.label} htmlFor="address2">Address Line 2</label>
+            <input
+              style={inputStyle('address2')}
+              id="address2" name="address2" type="text"
+              placeholder="Landmark, Area (optional)"
+              value={form.address2}
+              onChange={handleChange}
+              autoComplete="address-line2"
+            />
+          </div>
+
+          <div style={s.row}>
+            <div style={s.fieldWrap}>
+              <label style={s.label} htmlFor="city">City *</label>
+              <input
+                style={inputStyle('city')}
+                id="city" name="city" type="text"
+                placeholder="City"
+                value={form.city}
+                onChange={handleChange}
+                autoComplete="address-level2"
+              />
+            </div>
+            <div style={s.fieldWrap}>
+              <label style={s.label} htmlFor="pincode">Pincode *</label>
+              <input
+                style={inputStyle('pincode')}
+                id="pincode" name="pincode" type="tel"
+                placeholder="6-digit pincode"
+                value={form.pincode}
+                onChange={handleChange}
+                maxLength={6}
+              />
+            </div>
+          </div>
+
+          <div style={s.fieldWrap}>
+            <label style={s.label} htmlFor="state">State *</label>
             <select
-              id="state"
-              value={form.state}
-              onChange={set('state')}
               style={inputStyle('state')}
+              id="state" name="state"
+              value={form.state}
+              onChange={handleChange}
             >
-              {STATES.map((s) => <option key={s} value={s}>{s}</option>)}
+              {STATES.map((st) => <option key={st} value={st}>{st}</option>)}
             </select>
           </div>
-          <button type="submit" className={classes.submitBtn}>
+
+          <button type="submit" style={s.submitBtn}>
             Continue to Payment →
           </button>
+
         </form>
       </div>
     </div>
   );
 };
 
-export default withStyles(styles)(AddressForm);
+export default AddressForm;
