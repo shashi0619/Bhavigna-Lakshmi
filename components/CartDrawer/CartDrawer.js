@@ -7,6 +7,7 @@ import Drawer from '@material-ui/core/SwipeableDrawer';
 import { DrawerContext } from '../DrawerContext';
 import CartDrawerContent from './CartDrawerContent';
 import AddressForm from './AddressForm';
+import PaymentStatus from './PaymentStatus';
 
 const styles = {
   list: {
@@ -80,7 +81,7 @@ class CartDrawer extends Component {
 
   static contextType = DrawerContext;
 
-  state = { showAddressForm: false, loading: false };
+  state = { showAddressForm: false, loading: false, paymentStatus: null };
 
   loadRazorpayScript = () =>
     new Promise((resolve) => {
@@ -103,8 +104,10 @@ class CartDrawer extends Component {
 
     const loaded = await this.loadRazorpayScript();
     if (!loaded) {
-      alert('Payment service unavailable. Please check your connection.');
-      this.setState({ loading: false });
+      this.setState({
+        loading: false,
+        paymentStatus: { success: false, data: { reason: 'Payment service unavailable. Please check your connection.' } },
+      });
       return;
     }
 
@@ -136,10 +139,26 @@ class CartDrawer extends Component {
           store: 'Bhavigna Lakshmi Jewellery, Gajwel, Telangana',
         },
         theme: { color: '#8B1A3B' },
-        handler: (response) => {
-          alert(
-            `✅ Payment Successful!\n\nOrder ID: ${response.razorpay_order_id}\nPayment ID: ${response.razorpay_payment_id}\n\nThank you, ${address.name}! We will deliver to ${address.city} shortly.`
-          );
+        handler: async (response) => {
+          // Verify + save payment on server
+          await fetch('/api/confirm-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(response),
+          });
+          this.setState({
+            loading: false,
+            paymentStatus: {
+              success: true,
+              data: {
+                name: address.name,
+                city: address.city,
+                orderId: response.razorpay_order_id,
+                paymentId: response.razorpay_payment_id,
+                amount: order.amount,
+              },
+            },
+          });
         },
         modal: {
           ondismiss: () => this.setState({ loading: false }),
@@ -148,20 +167,27 @@ class CartDrawer extends Component {
 
       const rzp = new window.Razorpay(options);
       rzp.on('payment.failed', (response) => {
-        alert(`Payment failed: ${response.error.description}`);
-        this.setState({ loading: false });
+        this.setState({
+          loading: false,
+          paymentStatus: {
+            success: false,
+            data: { reason: response.error.description || 'Payment could not be processed.' },
+          },
+        });
       });
       rzp.open();
     } catch (err) {
-      alert('Something went wrong. Please try again.');
-      this.setState({ loading: false });
+      this.setState({
+        loading: false,
+        paymentStatus: { success: false, data: { reason: 'Something went wrong. Please try again.' } },
+      });
     }
   };
 
   render() {
     const { classes, uniqueCartItems, cart } = this.props;
     const { drawerCart, toggleDrawer } = this.context;
-    const { showAddressForm, loading } = this.state;
+    const { showAddressForm, loading, paymentStatus } = this.state;
 
     const total = cart
       ? cart.reduce((acc, item) => acc + item.price * (item.quantity || 1), 0)
@@ -210,6 +236,19 @@ class CartDrawer extends Component {
             total={total}
             onSubmit={this.handleAddressSubmit}
             onClose={() => this.setState({ showAddressForm: false })}
+          />
+        )}
+
+        {paymentStatus && (
+          <PaymentStatus
+            success={paymentStatus.success}
+            data={paymentStatus.data}
+            onClose={() => this.setState({ paymentStatus: null })}
+            onRetry={
+              !paymentStatus.success
+                ? () => this.setState({ paymentStatus: null, showAddressForm: true })
+                : undefined
+            }
           />
         )}
       </>
