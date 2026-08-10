@@ -12,7 +12,7 @@ const Layout = ({
   title = 'Bhavigna Lakshmi Collections | South Indian Gold & Bridal Jewellery',
   description = 'Exquisite hallmarked gold and silver jewellery crafted with heritage South Indian artisanship — bridal sets, temple jewellery, harams, vaddanam, and timeless everyday pieces.',
   user,
-  image = '/images/Banner-1.JPG',
+  image = '/images/bhavigna%20laxmi%20logo.webp',
   piecePath,
 }) => (
   <>
