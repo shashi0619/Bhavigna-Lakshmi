@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
 import Layout from '../components/Layout';
+import BirthdayTribute from '../components/BirthdayTribute/BirthdayTribute';
 import { getFeatured, COLLECTION_META, COLLECTIONS } from '../data/products';
 import { addToCart } from '../store/actions';
 
@@ -779,12 +780,14 @@ const Index = ({ pathname, collections }) => {
     new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(p);
 
   return (
-    <Layout
-      pathname={pathname}
-      collections={collections}
-      title="Bhavigna Lakshmi Collections | Indian Ethnic Wear"
-      description="Exquisite Indian ethnic wear — sarees, lehengas, and designer blouses crafted with heritage artisanship. Kanjivaram, Banarasi, Chanderi, and more."
-    >
+    <>
+      <BirthdayTribute />
+      <Layout
+        pathname={pathname}
+        collections={collections}
+        title="Bhavigna Lakshmi Collections | Indian Ethnic Wear"
+        description="Exquisite Indian ethnic wear — sarees, lehengas, and designer blouses crafted with heritage artisanship. Kanjivaram, Banarasi, Chanderi, and more."
+      >
       {/* ── Hero ─────────────────────────────────────────────── */}
       <HeroSection />
 
@@ -808,7 +811,8 @@ const Index = ({ pathname, collections }) => {
 
       {/* ── Newsletter ───────────────────────────────────────── */}
       <NewsletterSection email={email} setEmail={setEmail} />
-    </Layout>
+      </Layout>
+    </>
   );
 };
 
