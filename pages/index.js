@@ -785,8 +785,8 @@ const Index = ({ pathname, collections }) => {
       <Layout
         pathname={pathname}
         collections={collections}
-        title="Bhavigna Lakshmi Collections | Indian Ethnic Wear"
-        description="Exquisite Indian ethnic wear — sarees, lehengas, and designer blouses crafted with heritage artisanship. Kanjivaram, Banarasi, Chanderi, and more."
+        title="Bhavigna Lakshmi Collections | South Indian Gold & Bridal Jewellery"
+        description="Exquisite hallmarked gold and silver jewellery crafted with heritage South Indian artisanship — bridal sets, temple jewellery, harams, vaddanam, and timeless everyday pieces."
       >
       {/* ── Hero ─────────────────────────────────────────────── */}
       <HeroSection />

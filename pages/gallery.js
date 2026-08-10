@@ -366,7 +366,7 @@ const Gallery = ({ pathname, collections, router, classes, addToCartRedux, cart 
       pathname={pathname}
       collections={collections}
       title={`${activeTitle} | Bhavigna Lakshmi Collections`}
-      description="Explore our curated range of Indian ethnic wear — Kanjivaram sarees, Banarasi silk, bridal lehengas, festive wear, and designer blouses."
+      description="Explore our curated range of South Indian gold jewellery — bridal sets, temple jewellery, harams, vaddanam, and everyday adornments."
     >
       {/* Page hero */}
       <div className={classes.pageHero}>
