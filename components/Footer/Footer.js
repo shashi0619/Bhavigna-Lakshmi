@@ -196,7 +196,7 @@ const Footer = ({ classes }) => (
       </span>
       <div className={classes.socialRow}>
         <a
-          href="https://instagram.com"
+          href="https://instagram.com/bhavignalakshmicollections"
           target="_blank"
           rel="noopener noreferrer"
           className={classes.socialLink}

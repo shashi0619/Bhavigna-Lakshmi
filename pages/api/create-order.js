@@ -1,6 +1,7 @@
 import Razorpay from 'razorpay';
 import fs from 'fs';
 import path from 'path';
+import { getBySlug } from '../../data/products';
 
 const ORDERS_FILE = path.join(process.cwd(), 'data', 'orders.json');
 
@@ -19,8 +20,23 @@ function writeOrders(orders) {
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { amount, address } = req.body;
-  if (!amount || amount <= 0) return res.status(400).json({ error: 'Invalid amount' });
+  const { cart, address } = req.body;
+  if (!Array.isArray(cart) || cart.length === 0) {
+    return res.status(400).json({ error: 'Cart is empty' });
+  }
+
+  // Recompute the amount from the product catalog server-side — never trust
+  // a price/amount sent by the client, or a customer could pay whatever they choose.
+  const items = [];
+  let amount = 0;
+  for (const line of cart) {
+    const product = getBySlug(line?.slug);
+    if (!product) return res.status(400).json({ error: `Unknown product: ${line?.slug}` });
+    const quantity = Number.isInteger(line.quantity) && line.quantity > 0 ? line.quantity : 1;
+    amount += product.price * quantity;
+    items.push({ slug: product.slug, name: product.name, price: product.price, quantity });
+  }
+  if (amount <= 0) return res.status(400).json({ error: 'Invalid amount' });
 
   const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -50,6 +66,7 @@ export default async function handler(req, res) {
       status: 'pending',
       createdAt: new Date().toISOString(),
       address: address || {},
+      items,
       payment: null,
     });
     writeOrders(orders);

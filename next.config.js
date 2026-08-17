@@ -14,5 +14,11 @@ module.exports = withPlugins(
     images: {
       disableStaticImages: true,
     },
+    async rewrites() {
+      return [
+        { source: '/piece/:slug', destination: '/piece?slug=:slug' },
+        { source: '/gallery/:collection', destination: '/gallery?collection=:collection' },
+      ];
+    },
   }
 );

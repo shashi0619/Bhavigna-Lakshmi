@@ -177,7 +177,9 @@ class NavBar extends React.Component {
     const { classes, collections, pathname, uniqueCartItems } = this.props;
     const { anchorEl } = this.state;
 
-    const tabValue = pathname === '/' ? '/gallery' : pathname || '/gallery';
+    const validTabValues = ['/gallery', '/about', '/contact'];
+    const rawTabValue = pathname === '/' ? '/gallery' : pathname || '/gallery';
+    const tabValue = validTabValues.includes(rawTabValue) ? rawTabValue : false;
 
     return (
       <DrawerContext.Provider value={this.state}>

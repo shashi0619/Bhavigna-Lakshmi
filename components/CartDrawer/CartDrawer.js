@@ -111,15 +111,17 @@ class CartDrawer extends Component {
       return;
     }
 
-    const total = cart.reduce((acc, item) => acc + item.price * (item.quantity || 1), 0);
-
     try {
       const res = await fetch('/api/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: total, address }),
+        body: JSON.stringify({
+          cart: cart.map((item) => ({ slug: item.slug, quantity: item.quantity || 1 })),
+          address,
+        }),
       });
       const order = await res.json();
+      if (!res.ok) throw new Error(order?.error || 'Could not start checkout.');
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,

@@ -68,6 +68,12 @@ export default function AdminOrders() {
               </p>
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
+              <button
+                onClick={() => router.push('/admin/enquiries')}
+                style={{ backgroundColor: 'transparent', color: '#1C0C00', border: '1.5px solid #1C0C00', borderRadius: 6, padding: '9px 18px', fontFamily: 'inherit', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer' }}
+              >
+                Enquiries
+              </button>
               <button onClick={load} style={{ backgroundColor: '#8B1A3B', color: '#fff', border: 'none', borderRadius: 6, padding: '9px 18px', fontFamily: 'inherit', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
                 Refresh
               </button>

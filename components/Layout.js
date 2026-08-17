@@ -40,9 +40,7 @@ const Layout = ({
         </>
       )}
     </Head>
-    <div>
-      <NavBar pathname={pathname} collections={collections} user={user} />
-    </div>
+    <NavBar pathname={pathname} collections={collections} user={user} />
     <Main>{children}</Main>
     <Footer />
     <a

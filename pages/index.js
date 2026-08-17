@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
 import Layout from '../components/Layout';
-import { getFeatured, COLLECTION_META, COLLECTIONS } from '../data/products';
+import { getFeatured, getCollections, COLLECTION_META } from '../data/products';
 import { addToCart } from '../store/actions';
 
 const styles = (theme) => ({
@@ -881,7 +881,7 @@ const CollectionsSectionBase = ({ classes }) => (
         </Link>
       </div>
       <div className={classes.collectionsGrid}>
-        {COLLECTIONS.map((col) => {
+        {getCollections().map((col) => {
           const meta = COLLECTION_META[col] || { label: col, tagline: '', gradient: 'linear-gradient(135deg,#3D0A1A,#8B1A3B)' };
           return (
             <div
@@ -890,7 +890,7 @@ const CollectionsSectionBase = ({ classes }) => (
               onClick={() => Router.push(`/gallery?collection=${col}`, `/gallery/${col}`)}
               role="button"
               tabIndex={0}
-              onKeyDown={(e) => e.key === 'Enter' && Router.push(`/gallery?collection=${col}`)}
+              onKeyDown={(e) => e.key === 'Enter' && Router.push(`/gallery?collection=${col}`, `/gallery/${col}`)}
             >
               <div
                 className={classes.collectionBg}

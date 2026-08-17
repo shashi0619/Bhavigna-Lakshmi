@@ -119,18 +119,6 @@ class NavDrawerContent extends React.Component {
         </ListItem>
         <ListItem
           button
-          to="/wheretofind"
-          onKeyDown={(e) => this.handleKeyDown(e, null, '/wheretofind')}
-        >
-          <Link href="/wheretofind" passHref>
-            <ListItemText
-              primary="Where To Find"
-              classes={{ primary: classes.link }}
-            />
-          </Link>
-        </ListItem>
-        <ListItem
-          button
           to="/contact"
           onKeyDown={(e) => this.handleKeyDown(e, null, '/contact')}
         >

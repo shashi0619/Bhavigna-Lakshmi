@@ -49,7 +49,10 @@ const styles = (theme) => ({
     backgroundColor: '#FDF8F0',
     borderBottom: '1px solid rgba(139,26,59,0.1)',
     position: 'sticky',
-    top: 72,
+    // NavBar's toolbar has minHeight:72 but its 80px logo + 1px border push
+    // its real rendered height to 81px — must match so this bar sticks
+    // flush underneath it instead of overlapping.
+    top: 81,
     zIndex: 100,
   },
   filterBarInner: {
@@ -376,7 +379,7 @@ const Gallery = ({ pathname, collections, router, classes, addToCartRedux, cart 
         <p className={classes.pageSubtitle}>
           {active !== 'all'
             ? COLLECTION_META[active]?.tagline
-            : 'Handpicked ethnic wear crafted by India\'s finest artisans'}
+            : 'Handpicked gold and silver jewellery crafted by India\'s finest goldsmiths'}
         </p>
       </div>
 
@@ -394,7 +397,7 @@ const Gallery = ({ pathname, collections, router, classes, addToCartRedux, cart 
 
           {/* Scrollable tab strip */}
           <div className={classes.filterInner} ref={filterRef}>
-            {['all', ...COLLECTIONS].map((col) => {
+            {['all', ...COLLECTIONS.filter((col) => products.some((p) => p.group === col && p.display))].map((col) => {
               const count = col === 'all'
                 ? products.filter((p) => p.display).length
                 : products.filter((p) => p.group === col && p.display).length;

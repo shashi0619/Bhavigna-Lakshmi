@@ -1233,7 +1233,11 @@ export const products = [
 ];
 
 export const getFeatured = () => products.filter((p) => p.featured);
-export const getCollections = () => COLLECTIONS;
+// Only collections that actually have at least one product — keeps nav
+// menus, the homepage grid, and gallery filters from linking to empty
+// "no pieces found" dead ends.
+export const getCollections = () =>
+  COLLECTIONS.filter((c) => products.some((p) => p.group === c));
 export const getBySlug = (slug) => products.find((p) => p.slug === slug) || null;
 export const getByCollection = (col) =>
   col === 'all' ? products : products.filter((p) => p.group === col);

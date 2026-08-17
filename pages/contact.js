@@ -157,6 +157,16 @@ const styles = (theme) => ({
     color: '#1B5E20',
     lineHeight: 1.7,
   },
+  errorMsg: {
+    padding: '14px 20px',
+    marginBottom: 20,
+    backgroundColor: '#FDECEA',
+    borderLeft: '4px solid #C0392B',
+    fontFamily: "'Raleway', sans-serif",
+    fontSize: '0.85rem',
+    color: '#C0392B',
+    lineHeight: 1.6,
+  },
 
   // ── Sidebar ───────────────────────────────────────────────────
   sidebar: {},
@@ -225,17 +235,30 @@ const Contact = ({ pathname, collections, classes }) => {
   const [form, setForm] = useState({ name: '', email: '', phone: '', interest: '', message: '' });
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSending(true);
-    setTimeout(() => {
+    setError('');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error();
       setSent(true);
-      setSending(false);
       setForm({ name: '', email: '', phone: '', interest: '', message: '' });
-    }, 800);
+    } catch {
+      setError(
+        "Something went wrong sending your message. Please try again, or WhatsApp us directly at +91 92955 55504."
+      );
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -270,6 +293,7 @@ const Contact = ({ pathname, collections, classes }) => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className={classes.form}>
+              {error && <div className={classes.errorMsg}>{error}</div>}
               <div className={classes.row}>
                 <div className={classes.fieldWrap}>
                   <label className={classes.fieldLabel}>Full Name *</label>
